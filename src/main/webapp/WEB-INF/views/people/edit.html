@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Edit person</title>
+</head>
+<body>
+
+<form th:method="PATCH"
+	  th:action="@{/people/{id}(id=${person.getId()})}"
+	  th:object="${person}">
+	  
+	  <label for="first_name">Edit first name: </label>
+	  <input type="text" th:field="*{firstName}" id="first_name"/>
+	  <div 	style="color:red"
+	  		th:if="${#fields.hasErrors('firstName')}"
+	  		th:errors="*{firstName}">FIRST NAME ERROR</div>
+	  <br/>
+	  <label for="last_name">Edit last name: </label>
+	  <input type="text" th:field="*{lastName}" id="last_name"/>
+	  <div  style="color:red"
+	  		th:if="${#fields.hasErrors('lastName')}"
+	  		th:errors="*{lastName}">LAST NAME ERROR</div>
+	  <br/>
+	  <label for="date_of_birth">Edit date of birth name: </label>
+	  <input type="text" th:field="*{dateOfBirth}" id="date_of_birth"/>
+	  <div  style="color:red"
+	  		th:if="${#fields.hasErrors('dateOfBirth')}"
+	  		th:errors="*{dateOfBirth}">DATE OF BIRTH ERROR</div>
+	  <br/>
+	  <label for="email">Edit email: </label>
+	  <input type="text" th:field="*{email}" id="email"/>
+	  <div  style="color:red"
+	  		th:if="${#fields.hasErrors('email')}"
+	  		th:errors="*{email}">EMAIL ERROR</div>
+	  <br/>
+	  
+	  <input type="submit" value="Update"/>
+</form>
+
+<form th:method="GET" th:action="@{/people/{id}(id=${person.getId()})}">
+	<input type="submit" value="Back"/>
+</form>
+
+</body>
+</html>

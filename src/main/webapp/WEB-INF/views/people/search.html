@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Search people</title>
+</head>
+<body>
+
+<input type="button" onclick="history.back();" value="Back"/>
+<br/>
+<button onclick="window.location.href='/CRUDproject_Library2/people?page=0&size=5'">List of people</button>
+
+<hr/>
+
+<form th:method="GET"
+	  th:action="@{/people/search}"
+	  th:object="${desired_person}">
+	<label for="first_name">Enter first name: </label>
+	<input type="text" th:field="*{firstName}" id="first_name"/>
+	<br/>
+	<label for="last_name">Enter last name: </label>
+	<input type="text" th:field="*{lastName}" id="last_name"/>
+	<br/>
+	<input type="submit" value="search"/>
+</form>
+<hr/>
+<div th:if="${not #lists.isEmpty(list_of_desired_person)}" th:each="person : ${list_of_desired_person}">
+	<a th:href="@{/people/{id}(id=${person.getId()})}"
+		th:text="${person.getFirstName() + ', ' + person.getLastName()}">PERSON</a>
+</div>
+<div th:if="${#lists.isEmpty(list_of_desired_person)}">
+	<a>Not found...</a>
+</div>
+
+</body>
+</html>

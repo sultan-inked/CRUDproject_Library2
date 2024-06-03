@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>New book</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/books}" th:object="${book}">
+	<label for="name">Enter name: </label>
+	<input type="text" th:field="*{name}" id="name"/>
+	<div style="color:red"
+		 th:if="${#fields.hasErrors('name')}"
+		 th:errors="*{name}">NAME ERROR</div>
+	<br/>
+	<label for="author">Enter author: </label>
+	<input type="text" th:field="*{author}" id="author"/>
+	<div style="color:red"
+		 th:if="${#fields.hasErrors('author')}"
+		 th:errors="*{author}">AUTHOR ERROR</div>
+	<br/>
+	<label for="year">Enter year: </label>
+	<input type="text" th:field="*{year}" id="year"/>
+	<div style="color:red"
+		 th:if="${#fields.hasErrors('year')}"
+		 th:errors="*{year}">YEAR ERROR</div>
+	<br/>
+	<input type="submit" value="Create"/>
+</form>
+
+<input type="button" onclick="history.back();" value="Back"/>
+
+<form th:method="GET" th:action="@{/books}">
+	<input type="hidden" name="page" th:value="0"/>
+	<input type="hidden" name="size" th:value="5"/>
+	<input type="hidden" name="sort_by_year" th:value="false"/>
+	<input type="submit" value="List of books"/>
+</form>
+
+</body>
+</html>

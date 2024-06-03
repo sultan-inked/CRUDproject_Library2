@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>All people</title>
+</head>
+<body>
+
+<form th:method="GET" th:action="@{/people/new}">
+	<input type="submit" value="New Person"/>
+</form>
+
+<form th:method="GET" th:action="@{/books}">
+	<input type="submit" value="List of books"/>
+</form>
+
+<a>List of People:</a>
+<hr/>
+
+<div th:each="person : ${people}">
+	<a th:href="@{/people/{id}(id=${person.getId()})}"
+	   th:text="${person.getFirstName() + ' ' + person.getLastName()}">USER</a>
+</div>
+
+</body>
+</html>

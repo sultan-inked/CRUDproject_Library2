@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Page books</title>
+
+<style>
+	h1 {
+		font-size: 28px;
+		font-family: "Times New Roman", "Courier", monospace;
+		color: deeppink
+	}
+</style>
+
+</head>
+<body>
+
+<!-- 
+<a th:href="@{/people(page=${page*0}, size=${size})}" th:text="'List of people'">LIST OF PEOPLE</a>
+<input type="submit" th:action="@{/people(page=${page*0}, size=${size})}" value="List of people"/>
+<form th:method="GET" th:action="@{/people(page=${page*0}, size=${size})}">
+	<input type="submit" value="GO"/>
+</form>
+<button onclick="window.location.href='/CRUDproject_Library2/people?page=0&size=5'">List of people</button>
+-->
+
+<form th:method="GET" th:action="@{/people}">
+	<input type="hidden" name="page" th:value="${page*0}"/>
+	<input type="hidden" name="size" th:value="${size}"/>
+	<input type="submit" value="List of people"/>
+</form>
+
+<form th:method="GET" th:action="@{/books/new}">
+	<input type="submit" value="New book"/>
+</form>
+
+<form th:method="GET" th:action="@{/books/search}">
+	<input type="submit" value="Searching page"/>
+</form>
+<!--
+<form th:method="GET" th:action="@{/books(page=${page}, size=${size}, sort_by_year=${!sort_by_year})}">
+	<input type="submit" th:value="${sort_by_year ? 'Unsort by year' : 'Sort by year'}"/>
+</form>
+-->
+<form th:method="GET" th:action="@{/books}">
+    <input type="hidden" name="page" th:value="${page}"/>
+    <input type="hidden" name="size" th:value="${size}"/>
+    <input type="hidden" name="sort_by_year" th:value="${!sort_by_year}"/>
+    <input type="submit" th:value="${sort_by_year ? 'Unsort by Year' : 'Sort by Year'}"/>
+</form>
+
+<hr/>
+<a>List of Books:</a>
+
+<div th:each="book : ${books}">
+	<a th:href="@{/books/{id}(id=${book.getId()})}"
+	   th:text="${book.getName() + ' ' + book.getAuthor() + ' ' + book.getYear()}">BOOK</a>
+	<a   style="color:greenyellow"
+		 th:if="${book.getOwner() == null}"
+		 th:text="'FREE'">FREE</a>
+	<a   style="color:red"
+		 th:if="${book.getBookReturnTimeIsOverdue()}"
+		 th:text="'Book is overdue!'">OVERDUE</a>
+</div>
+
+<!-- Попытка покрасить каждую ссылку с просроченной книгой в красный
+<div th:each="book : ${books}">
+	<tr th:style="${book.getBookReturnTimeIsOverdue()} ? 'color: red;' : 'color: blue;'">
+		<a th:href="@{/books/{id}(id=${book.getId()})}"
+	   th:text="${book.getName() + ' ' + book.getAuthor() + ' ' + book.getYear()}">BOOK</a>
+	</tr>
+</div>
+-->
+<hr/>
+
+<div th:if="${page>0 and page<total_pages}">
+	<a th:href="@{/books(page=${page-1}, size=${size}, sort_by_year=${sort_by_year})}" th:text="'Previous page'">PREV</a>
+	<a> or </a>
+	<a th:href="@{/books(page=${page+1}, size=${size}, sort_by_year=${sort_by_year})}" th:text="'Next page'">NEXT</a>
+</div>
+
+<div th:if="${page == 0}">
+	<a th:href="@{/books(page=${page+1}, size=${size}, sort_by_year=${sort_by_year})}" th:text="'Next page'">NEXT</a>
+	</div>
+
+<div th:if="${page == total_pages}">
+	<a th:href="@{/books(page=${page-1}, size=${size}, sort_by_year=${sort_by_year})}" th:text="'Previous page'">PREV</a>
+</div>
+
+</body>
+</html>

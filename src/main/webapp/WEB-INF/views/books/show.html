@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Book info</title>
+</head>
+<body>
+
+<a th:text="${'Name: ' + book.getName()}">NAME</a>
+<br/>
+<a th:text="${'Author: ' + book.getAuthor()}">AUTHOR</a>
+<br/>
+<a th:text="${'Year: ' + book.getYear()}">YEAR</a>
+<br/>
+<a th:text="${'Created at: ' + book.getCreatedAt()}">CREATED AT</a>
+<br/>
+<a th:text="${'Assigned at: ' + book.getAssignedAt()}">ASSIGNED AT</a>
+<br/>
+<div th:if="${book.getBookReturnTimeIsOverdue()}">
+	<a th:text="${'Book return time is overdue: ' + book.getBookReturnTimeIsOverdue()}">TEXT</a>
+</div>
+<div th:if="${!book.getBookReturnTimeIsOverdue()}">
+	<a th:text="${'Book return time is overdue: ' + book.getBookReturnTimeIsOverdue()}">TEXT</a>
+</div>
+
+<hr/>
+
+<div th:if="${book.getOwner() == null}">
+	<a>This book is free.</a>
+	<br/>
+	<form th:method="GET" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${desired_person}">
+			<label for="first_name">Enter first name: </label>
+			<input type="text" th:field="*{firstName}" id="first_name"/>
+			<br/>
+			<label for="last_name">Enter last name: </label>
+			<input type="text" th:field="*{lastName}" id="last_name"/>
+			<br/>
+			<input type="submit" value="search"/>
+	</form>
+	
+	<form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
+		<label for="person">Pick a person:</label>
+		<select th:object="${person}" th:field="*{id}" id="person">
+			<option th:each="person : ${people}"
+					th:value="${person.getId()}"
+					th:text="${person.getFirstName() + ' ' + person.getLastName()}"></option>
+		</select>
+		<input type="submit" value="Assign a book"/>
+	</form>
+	
+</div>
+
+<div th:if="${book.getOwner() != null}">
+	<a>Book is not free.</a>
+	<br/>
+	<a th:text="${person.getFirstName() + ' ' + person.getLastName()}"
+		th:href="@{/people/{id}(id=${person.getId()})}">PERSON</a><a> has the book now.</a>
+	
+	<form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
+		<input type="submit" value="Release the book"/>
+	</form>
+</div>
+
+<hr/>
+
+<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
+	<input type="submit" value="Edit"/>
+</form>
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
+	<input type="submit" value="Delete"/>
+</form>
+
+<input type="button" onclick="history.back();" value="Back"/>
+
+<form th:method="GET" th:action="@{/books}">
+	<input type="hidden" name="page" th:value="0"/>
+	<input type="hidden" name="size" th:value="5"/>
+	<input type="hidden" name="sort_by_year" th:value="false"/>
+	<input type="submit" value="List of books"/>
+</form>
+
+</body>
+</html>

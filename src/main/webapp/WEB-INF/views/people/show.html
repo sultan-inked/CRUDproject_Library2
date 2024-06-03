@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Person info</title>
+</head>
+<body>
+
+<a th:text="${'First name: ' + person.getFirstName()}">FIRST NAME</a>
+<br/>
+<a th:text="${'Last name: ' + person.getLastName()}">LAST NAME</a>
+<br/>
+<a th:text="${'Date of birth: ' + person.getDateOfBirth()}">DATE OF BIRTH</a>
+<br/>
+<a th:text="${'Email: ' + person.getEmail()}">EMAIL</a>
+<br/>
+<a th:text="${'Id: ' + person.getId()}">ID</a>
+<br/>
+<a th:text="${'Created at: ' + person.getCreatedAt()}">CREATED AT</a>
+
+<hr/>
+
+<div th:if="${#lists.isEmpty(books)}">
+	<a>The person has no books.</a>
+	<form th:method="GET" th:action="@{/books}">
+	<input type="hidden" name="page" th:value="0"/>
+	<input type="hidden" name="size" th:value="5"/>
+	<input type="hidden" name="sort_by_year" th:value="false"/>
+	<input type="submit" value="List of books"/>
+</form>
+</div>
+
+<div th:if="${not #lists.isEmpty(books)}" th:each="book : ${books}">
+	<a th:href="@{/books/{id}(id=${book.getId()})}"
+		th:text="${book.getAuthor() + ', ' + book.getName()}">BOOK</a>
+	<a style="color:red"
+		 th:if="${book.getBookReturnTimeIsOverdue()}"
+		 th:text="'Book is overdue!'">OVERDUE</a>
+	<form th:method="PATCH" th:action="@{/people/{person_id}/release/{book_id}(person_id=${person.getId()}, book_id=${book.getId()})}">
+		<input type="submit" value="Release the book" id="book"/>
+	</form>
+</div>
+
+<hr/>
+
+<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getId()})}">
+	<input type="submit" value="Edit"/>
+</form>
+
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
+	<input type="submit" value="Delete"/>
+</form>
+
+<input type="button" onclick="history.back();" value="Back"/>
+
+<form th:method="GET" th:action="@{/people}">
+	<input type="hidden" name="page" th:value="0"/>
+	<input type="hidden" name="size" th:value="5"/>
+	<input type="submit" value="List of people"/>
+</form>
+
+</body>
+</html>

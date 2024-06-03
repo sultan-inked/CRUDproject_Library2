@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Page people</title>
+</head>
+<body>
+
+<!--
+<a th:href="@{/books(page=${page*0}, size=${size})}" th:text="'List of books'">LIST OF BOOKS</a>
+<button onclick="window.location.href='/CRUDproject_Library2/books?page=0&size=5'">List of books</button>
+-->
+
+<form th:method="GET" th:action="@{/books}">
+	<input type="hidden" name="page" th:value="${page*0}"/>
+	<input type="hidden" name="size" th:value="${size}"/>
+	<input type="hidden" name="sort_by_year" th:value="false"/>
+	<input type="submit" value="List of books"/>
+</form>
+
+<form th:method="GET" th:action="@{/people/new}">
+	<input type="submit" value="New person"/>
+</form>
+
+<form th:method="GET" th:action="@{/people/search}">
+	<input type="submit" value="Searching page"/>
+</form>
+
+<hr/>
+<a>List of People:</a>
+<div th:each="person : ${people}">
+	<a th:href="@{/people/{id}(id=${person.getId()})}"
+	   th:text="${person.getFirstName() + ' ' + person.getLastName()}">PERSON</a>
+</div>
+<hr/>
+
+<div th:if="${page>0 and page<totalPages}">
+	<a th:href="@{/people(page=${page-1}, size=${size})}" th:text="'Previous page'">PREV</a>
+	<a> or </a>
+	<a th:href="@{/people(page=${page+1}, size=${size})}" th:text="'Next page'">NEXT</a>
+</div>
+
+<div th:if="${page == 0}">
+	<a th:href="@{/people(page=${page+1}, size=${size})}" th:text="'Next page'">NEXT</a>
+	</div>
+
+<div th:if="${page == totalPages}">
+	<a th:href="@{/people(page=${page-1}, size=${size})}" th:text="'Previous page'">PREV</a>
+</div>
+
+</body>
+</html>
