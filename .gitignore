@@ -11,4 +11,5 @@
 # Ignored compile files:
 bin/
 
-.hibernate.properties.origin
+src/main/resources/hibernate.properties
+target/classes/hibernate.properties
