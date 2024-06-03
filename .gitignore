@@ -10,3 +10,5 @@
 
 # Ignored compile files:
 bin/
+
+.hibernate.properties.origin
